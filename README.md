@@ -1,6 +1,6 @@
 # Cynthia NSNF descendant infrastructure
 
-Executable, tested infrastructure toward the cumulative v0.9 specification. **The full requested system remains unfinished.** See [capability status and unresolved mechanics](docs/nsnf/STATUS.md), [source specification](docs/nsnf/SPECIFICATION.txt), and [changelog](docs/nsnf/CHANGELOG.md).
+Executable, tested infrastructure toward the cumulative v0.9 specification. **The full requested system remains unfinished.** See [capability status and unresolved mechanics](docs/nsnf/STATUS.md), and [changelog](docs/nsnf/CHANGELOG.md).
 
 ## Run locally
 

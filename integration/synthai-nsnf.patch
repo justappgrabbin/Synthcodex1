@@ -1,0 +1,110 @@
+diff --git a/computer/ComputerRuntime.mjs b/computer/ComputerRuntime.mjs
+index 1d73d49..f0e5ef4 100644
+--- a/computer/ComputerRuntime.mjs
++++ b/computer/ComputerRuntime.mjs
+@@ -15,9 +15,11 @@ import { AutomataEngineGateway } from './services/automata-engine.mjs';
+ import { WorldEngineGateway } from './services/world-engine.mjs';
+ import { PentaEphemerisService } from './services/penta-ephemeris.mjs';
+ import { ExperimentLoop } from './services/experiment-loop.mjs';
++import { NSNFFieldService } from './services/nsnf-field.mjs';
+ 
+ export class ComputerRuntime {
+-  constructor({ persistence = new MemoryPersistence(), namespace = 'synthai-computer', github = null, eventLogPath = null } = {}) {
++  constructor({ persistence = new MemoryPersistence(), namespace = 'synthai-computer', github = null, eventLogPath = null, nsnfBaseUrl = null } = {}) {
++    this.nsnfBaseUrl = nsnfBaseUrl;
+     this.eventLogPath = eventLogPath;
+     this.bus = new EventBus();
+     this.state = new StateStore({ bus: this.bus, persistence, namespace });
+@@ -110,6 +112,11 @@ export class ComputerRuntime {
+     // Acceptance-7: experiment loop (donor HypothesisRegistry, wrap-only).
+     this.experiments = new ExperimentLoop({ bus: this.bus });
+     this.services.register('experiment-loop', { provider: this.experiments, contract: 'runExperiment' });
++    if (this.nsnfBaseUrl) {
++      this.neuralField = new NSNFFieldService({ baseUrl: this.nsnfBaseUrl, runtime: this });
++      this.services.register('nsnf-field', { provider: this.neuralField, contract: 'execute/contact' });
++      this.capabilities.register('nsnf-execute', { providers: ['nsnf-field'] });
++    }
+     for (const id of ['resolve_address', 'resolve_state', 'emit_event', 'query_capability', 'automata_activation']) {
+       if (!this.capabilityRegistry.has(id)) this.capabilities.register(id, { providers: ['back-up-', 'computer'] });
+     }
+diff --git a/computer/services/nsnf-field.mjs b/computer/services/nsnf-field.mjs
+new file mode 100644
+index 0000000..cd28638
+--- /dev/null
++++ b/computer/services/nsnf-field.mjs
+@@ -0,0 +1,48 @@
++/** Optional real neural-field service. Existing providers and addresses stay intact. */
++export class NSNFFieldService {
++  constructor({ baseUrl, runtime, fetchImpl = globalThis.fetch }) {
++    this.baseUrl = new URL(baseUrl);
++    if (!['127.0.0.1', 'localhost', '[::1]'].includes(this.baseUrl.hostname)) {
++      throw new Error('NSNF field currently supports a local single-owner API only');
++    }
++    this.runtime = runtime;
++    this.fetch = fetchImpl;
++  }
++
++  async request(path, body) {
++    const response = await this.fetch(new URL(path, this.baseUrl), {
++      method: body === undefined ? 'GET' : 'POST',
++      headers: { 'content-type': 'application/json' },
++      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
++      signal: AbortSignal.timeout(30000),
++    });
++    const result = await response.json();
++    if (!response.ok) {
++      this.runtime.bus.emit('service:provider-failure', { provider: 'nsnf-field-v1', status: response.status, result });
++      throw new Error(`NSNF execution failed: ${JSON.stringify(result)}`);
++    }
++    return result;
++  }
++
++  async execute(input) {
++    const result = await this.request('/execute', input);
++    await this.runtime.emitEvent({
++      event_type: 'graph_activation', actor_id: 'nsnf-field', actor_type: 'process',
++      provider: 'nsnf-field-v1', input, result,
++      result_status: 'success', observable_effect: `${result.selected.length} neural components executed`,
++      evidence: { kind: 'neural-run', ref: result.id, summary: 'Real NumPy execution, persisted in private SQLite field store' },
++    });
++    return result;
++  }
++
++  async contact(observation) {
++    const result = await this.request('/events', observation);
++    await this.runtime.emitEvent({
++      event_type: 'observation', actor_id: observation.actor_ref, actor_type: 'user',
++      provider: 'nsnf-field-v1', result, result_status: result.interpretation ? 'success' : 'partial',
++      observable_effect: result.action,
++      evidence: { kind: 'contact-investigation', ref: result.id, summary: result.status },
++    });
++    return result;
++  }
++}
+diff --git a/computer/tests/nsnf-integration.test.mjs b/computer/tests/nsnf-integration.test.mjs
+new file mode 100644
+index 0000000..1bbca9d
+--- /dev/null
++++ b/computer/tests/nsnf-integration.test.mjs
+@@ -0,0 +1,21 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { mkdtemp, rm } from 'node:fs/promises';
++import { tmpdir } from 'node:os';
++import { join } from 'node:path';
++import { ComputerRuntime } from '../ComputerRuntime.mjs';
++
++test('Computer -> real private NSNF API -> neural trace -> persisted Computer event', {skip: !process.env.NSNF_TEST_URL}, async () => {
++  const dir = await mkdtemp(join(tmpdir(), 'nsnf-computer-'));
++  try {
++    const runtime = await new ComputerRuntime({eventLogPath:join(dir,'events.jsonl'),nsnfBaseUrl:process.env.NSNF_TEST_URL}).boot();
++    const result = await runtime.neuralField.execute({features:[.7,.1,.2,.3,.4,.5,.6,.8],tier:2});
++    assert.equal(result.selected.length,10);
++    assert.equal(result.micro[result.selected[0].component_id].length,2);
++    const events=await runtime.eventEmitter.readAll();
++    assert.ok(events.some(e=>e.provider==='nsnf-field-v1' && e.result.id===result.id));
++    const replay=await runtime.neuralField.request(`/runs/${result.id}/replay`,{});
++    assert.equal(replay.exact,true);
++    assert.ok(runtime.services.has('nsnf-field'));
++  } finally { await rm(dir,{recursive:true,force:true}); }
++});

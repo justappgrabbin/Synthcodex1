@@ -1,0 +1,52 @@
+{
+  "seed": 101,
+  "task": "synthetic binary sign classification on disjoint held-out vectors",
+  "samples": 100,
+  "training_samples": 160,
+  "quality_threshold": 0.9,
+  "results": [
+    {
+      "mode": "sparse",
+      "accuracy": 0.98,
+      "p50_ms": 0.20773950000000002,
+      "p95_ms": 0.25575299999999995,
+      "macs_per_request": 600.0,
+      "active_components": 5,
+      "estimated_dollars_per_1000_requests": null,
+      "cost_reason": "hardware billing rate unspecified"
+    },
+    {
+      "mode": "all-active",
+      "accuracy": 0.98,
+      "p50_ms": 2.629847,
+      "p95_ms": 2.88722375,
+      "macs_per_request": 38400.0,
+      "active_components": 320,
+      "estimated_dollars_per_1000_requests": null,
+      "cost_reason": "hardware billing rate unspecified"
+    },
+    {
+      "mode": "small-dense",
+      "accuracy": 0.98,
+      "p50_ms": 0.007961,
+      "p95_ms": 0.0086735,
+      "macs_per_request": 120.0,
+      "active_components": 1,
+      "estimated_dollars_per_1000_requests": null,
+      "cost_reason": "hardware billing rate unspecified"
+    }
+  ],
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "processor": "",
+    "numpy": "2.3.5"
+  },
+  "process_peak_rss_kib": 26720,
+  "scope": "compute-only; excludes persistence, HTTP and UI. All-active and sparse use identically trained replicated modules.",
+  "limitations": [
+    "Replicated modules make this a compute ablation, not evidence of distributed field intelligence.",
+    "Small dense baseline can be faster; sparse superiority is not established.",
+    "Per-scenario peak memory, sequence recall and learned graph propagation benchmarks remain required.",
+    "Calibration, VRAM, media success rates and address ablations remain unmeasured."
+  ]
+}

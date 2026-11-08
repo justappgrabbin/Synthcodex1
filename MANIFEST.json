@@ -1,0 +1,141 @@
+{
+  "upstream": "https://github.com/justappgrabbin/SynthAi",
+  "upstream_commit": "826ca35217b0d671bf81b3bdc2518afc4402e32e",
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "928dfa84b8428d1afa2e2c7ec9c90b318f88bc87cad1a4b8d70c2958b2ffca02",
+      "bytes": 85
+    },
+    {
+      "path": "README.md",
+      "sha256": "81c4e5d73725cb7eb4f369ea093257dd1cd0f60ed684540bfbb3df8ebb6d4555",
+      "bytes": 3320
+    },
+    {
+      "path": "api/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "api/server.py",
+      "sha256": "2d1afc07be5ac680ae362616e19c9fa3331a053474048b4a0ae736d9aeacc0ce",
+      "bytes": 4388
+    },
+    {
+      "path": "docs/nsnf/CHANGELOG.md",
+      "sha256": "937198650ea30e9c9ee0ef747903659399ffb1264da8ea4b9b32b8c2b7b7fd57",
+      "bytes": 868
+    },
+    {
+      "path": "docs/nsnf/STATUS.md",
+      "sha256": "dc86cc3ec4677d3c4c19b468667fb3c47049d04ef5cbb634cc61413ab42e75dc",
+      "bytes": 3943
+    },
+    {
+      "path": "evidence/nsnf/benchmark.json",
+      "sha256": "7bbad2d4eab87bb04a0e951b80836aa7c8f7cc90dceb1e40ea51050c3548bc54",
+      "bytes": 1761
+    },
+    {
+      "path": "evidence/nsnf/computer-field-integration.tap",
+      "sha256": "e715afb0a95d2853e5606f4ca22797f8e082240bf85aca6c8d82eaabcf94bcc8",
+      "bytes": 345
+    },
+    {
+      "path": "evidence/nsnf/python-tests.txt",
+      "sha256": "4acd5a722018d5570f9091a6c4c18497c3e671a40b6a47c9cccd943a89485e59",
+      "bytes": 1842
+    },
+    {
+      "path": "integration/synthai-nsnf.patch",
+      "sha256": "500b3566ae0696cd54de420a3c11b39ec51d37616af6a18dca5d7301f0295623",
+      "bytes": 5641
+    },
+    {
+      "path": "nsnf/__init__.py",
+      "sha256": "e8a3be0f1e1f8e5cc198562b50f773f4b2d8dce836a779a152878f59a74acd1c",
+      "bytes": 86
+    },
+    {
+      "path": "nsnf/activation.py",
+      "sha256": "4221dd589358ee3b5ee16fdccccd0edf9cd3c5b4ef7767b056a915b994102e23",
+      "bytes": 1241
+    },
+    {
+      "path": "nsnf/address.py",
+      "sha256": "76bf085a7c2ea5e1978efc1bdbd3c719d9e0501b2f786fd4d02d7b01f9a4374a",
+      "bytes": 3370
+    },
+    {
+      "path": "nsnf/benchmark.py",
+      "sha256": "4417522b80a93edbcf5a94cb3df60e1b7e12c23ed0f38ab94d04aa965aeef80b",
+      "bytes": 3018
+    },
+    {
+      "path": "nsnf/components.py",
+      "sha256": "2179d98dbd0dd18f14e2f7ffd8f54bbe6c3eedef0217f3347a9c9a6fe1d941e7",
+      "bytes": 1977
+    },
+    {
+      "path": "nsnf/hexagram.py",
+      "sha256": "3091a247de32af24ff6d0fd3cb1a00f9293ce70228a5d8987eb3cc36412959e4",
+      "bytes": 1130
+    },
+    {
+      "path": "nsnf/runtime.py",
+      "sha256": "7d6a35b5d2602f544b6eb5af404838e547285ecd093a51f4a3b94b95be0e5d74",
+      "bytes": 13702
+    },
+    {
+      "path": "nsnf/schema.py",
+      "sha256": "982dc33709ebde1217cf3338063835e852c272e6e6b43fa0717181b6a4da6059",
+      "bytes": 1933
+    },
+    {
+      "path": "nsnf/state_store.py",
+      "sha256": "db05461529a59779a6047cd5215a8a94d6534072b1fa352660568236f7b9244f",
+      "bytes": 4497
+    },
+    {
+      "path": "nsnf/topology.py",
+      "sha256": "3dfcbb2d79441041203f295547b92047a7f766d1232078f49c90b3b2a569529f",
+      "bytes": 2380
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "c55da5c732efbf7c131353a5ce2a1e339349e06c70a88b7c4e8828dd910950a0",
+      "bytes": 386
+    },
+    {
+      "path": "tests/nsnf/browser_check.py",
+      "sha256": "321ea8c1290ccb3183c329a6133df1e6fb9068f3f1a566b03aba1954c24b0327",
+      "bytes": 2415
+    },
+    {
+      "path": "tests/nsnf/test_api.py",
+      "sha256": "732bb0f5fc2cdb162f494a35cb479733c6643b1f5334a236ccbed1c8e05534f5",
+      "bytes": 1517
+    },
+    {
+      "path": "tests/nsnf/test_core.py",
+      "sha256": "6cca90e69ce28aaf34ce53ba599b023b4e38b9b17992485fffff41b30c77a6cf",
+      "bytes": 7230
+    },
+    {
+      "path": "ui/field.css",
+      "sha256": "53ac8447b2e81134ef58e3e38447ca64dcfc01f461e0d62259785141b1addd48",
+      "bytes": 3834
+    },
+    {
+      "path": "ui/field.html",
+      "sha256": "1f05238bd0735d3bbde8068129211bc986450ef7210404f59ead0fea74d659a6",
+      "bytes": 2612
+    },
+    {
+      "path": "ui/field.js",
+      "sha256": "188f01ce8c118fa2a535d828383ea22f064c68848780cf0df62f740a53a8d2df",
+      "bytes": 4064
+    }
+  ]
+}

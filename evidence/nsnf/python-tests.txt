@@ -1,0 +1,20 @@
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_real_execute_feedback_replay_restore_and_failures (test_api.APITests.test_real_execute_feedback_replay_restore_and_failures) ... ok
+test_address_precision_and_unresolved_rules (test_core.CoreTests.test_address_precision_and_unresolved_rules) ... ok
+test_all_hexagrams (test_core.CoreTests.test_all_hexagrams) ... ok
+test_append_only_and_integrity (test_core.CoreTests.test_append_only_and_integrity) ... ok
+test_behavioral_parameter_transfer_persists (test_core.CoreTests.test_behavioral_parameter_transfer_persists) ... ok
+test_budgets_masks_and_slots (test_core.CoreTests.test_budgets_masks_and_slots) ... ok
+test_cache_and_invalidation (test_core.CoreTests.test_cache_and_invalidation) ... ok
+test_concurrent_writer_conflict (test_core.CoreTests.test_concurrent_writer_conflict) ... ok
+test_invalid_execution_is_not_persisted (test_core.CoreTests.test_invalid_execution_is_not_persisted) ... ok
+test_learning_changes_parameters_and_heldout_behavior (test_core.CoreTests.test_learning_changes_parameters_and_heldout_behavior) ... ok
+test_nonverbal_investigation_correction_and_private_scope (test_core.CoreTests.test_nonverbal_investigation_correction_and_private_scope) ... ok
+test_restart_restore_and_exact_replay_after_learning (test_core.CoreTests.test_restart_restore_and_exact_replay_after_learning) ... ok
+test_typed_messages_affect_receiving_computation (test_core.CoreTests.test_typed_messages_affect_receiving_computation) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.250s
+
+OK
