@@ -18,7 +18,12 @@ function render(run) {
     strong.textContent=value;small.textContent=label;el.append(strong,small);$('metrics').append(el);
   }
   $('trace').textContent=JSON.stringify(run,null,2);
-  $('output').textContent=JSON.stringify({probabilities:run.output,semantics:run.output_semantics,meso:run.meso,macro:run.macro},null,2);
+  $('perception-status').textContent=run.perception
+    ? 'Perception — '+[3,4,5].map(d=>`D${d}: ${run.perception.perceived_outputs[String(d)]===null?'not yet perceptible':'perceptible'}`).join(' · ')
+    : 'Historical run: dimensional perception was not evaluated.';
+  $('output').textContent=JSON.stringify({perceived_outputs:run.perception?.perceived_outputs??null,
+    perception_rule:run.perception?.rule_version??'not evaluated in this historical run',
+    raw_probabilities:run.output,semantics:run.output_semantics,meso:run.meso,macro:run.macro},null,2);
   $('replay').disabled=false;
 }
 async function history() {

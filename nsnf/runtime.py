@@ -8,6 +8,7 @@ from .components import MLP
 from .activation import select
 from .topology import aggregate, validate_edges, slots
 from .state_store import Store
+from .perception import perceive, RULE_VERSION as PERCEPTION_RULE
 
 
 class Runtime:
@@ -50,7 +51,8 @@ class Runtime:
         hits = 0
         macs = 0
         relevant = {k: state[k] for k in ("models", "topology_version", "edges")}
-        key = digest({"features": features, "tier": tier, "state": relevant, "selected": selected})
+        key = digest({"features": features, "tier": tier, "state": relevant, "selected": selected,
+                      "perception_rule": PERCEPTION_RULE})
         if cache and key in self.cache:
             result = deepcopy(self.cache[key])
             result["cache_hits"] = len(selected) * TIERS[tier].rounds
@@ -76,7 +78,8 @@ class Runtime:
         meso, macro = aggregate(micro, state["edges"])
         result = {"selected": selected, "micro": micro, "meso": meso, "macro": macro,
                   "messages": messages, "component_inputs": inputs, "macs": macs,
-                  "cache_hits": hits, "cache_key": key}
+                  "cache_hits": hits, "cache_key": key,
+                  "perception": perceive(micro, messages)}
         if cache:
             # Bounded process-local cache; checkpoints and model changes alter the key.
             if len(self.cache) >= 128:
@@ -101,6 +104,7 @@ class Runtime:
                 if choices:
                     state["dimension_codes"][dim] = choices[0]["index"] % 64
             state["meso"], state["macro"] = result["meso"], result["macro"]
+            state["perception"] = result["perception"]
             result.update({"features": features, "tier": tier, "tier_reason": reason,
                            "candidates": candidates, "before_hash": before_hash,
                            "topology_version": state["topology_version"], "model_version": state["model_version"],
@@ -275,6 +279,8 @@ class Runtime:
             before = self.store.get(original["before_hash"])
             actual = self._compute(original["features"], original["tier"], before, original["candidates"], cache=False)
             fields = ("selected", "micro", "meso", "macro", "messages", "component_inputs")
+            if "perception" in original:
+                fields += ("perception",)
             matches = {field: actual[field] == original[field] for field in fields}
             return {"run_id": key, "exact": all(matches.values()), "checks": matches,
                     "journal": self.store.verify()}

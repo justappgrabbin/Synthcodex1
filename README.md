@@ -19,6 +19,8 @@ Set `NSNF_DATA` to choose the durable SQLite/blob directory. Default owner is `l
 
 ## Reproduce tests and benchmark
 
+The [dimensional perception rule](docs/nsnf/PERCEPTION.md) now requires at least three expressed dimensions including the current dimension for perception in D3, D4 or D5. Run `python -m nsnf.perception_demo` for a real execution/replay example. Execution traces and the UI distinguish perceived outputs from raw neural values.
+
 ```sh
 python -m unittest discover -s tests/nsnf -v
 python -m nsnf.benchmark

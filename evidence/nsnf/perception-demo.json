@@ -1,0 +1,199 @@
+{
+  "two_dimensions": {
+    "rule_version": "three-dimensions-including-current-v1",
+    "authority": "user clarification in this conversation",
+    "dimension_numbering": "1..5; internal component d0 is dimension 1",
+    "expression_mapping": "connected components of actual run messages; engineering convention",
+    "prior_convention": "dimensions up to and including current; later dimensions excluded",
+    "expressions": [
+      {
+        "members": [
+          "d1:g0",
+          "d2:g0"
+        ],
+        "state": [
+          0.5651385564962685,
+          0.4348614435037315
+        ],
+        "dimensions": [
+          2,
+          3
+        ],
+        "decisions": [
+          {
+            "current_dimension": 3,
+            "expressed_dimensions": [
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": true,
+            "distinct_count": 2,
+            "minimum": 3,
+            "perceptible": false,
+            "reason": "fewer than three expressed dimensions including current",
+            "rule_version": "three-dimensions-including-current-v1"
+          },
+          {
+            "current_dimension": 4,
+            "expressed_dimensions": [
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": false,
+            "distinct_count": 2,
+            "minimum": 3,
+            "perceptible": false,
+            "reason": "current dimension has no expression",
+            "rule_version": "three-dimensions-including-current-v1"
+          },
+          {
+            "current_dimension": 5,
+            "expressed_dimensions": [
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": false,
+            "distinct_count": 2,
+            "minimum": 3,
+            "perceptible": false,
+            "reason": "current dimension has no expression",
+            "rule_version": "three-dimensions-including-current-v1"
+          }
+        ]
+      }
+    ],
+    "perceived_outputs": {
+      "3": null,
+      "4": null,
+      "5": null
+    }
+  },
+  "three_dimensions_including_current": {
+    "rule_version": "three-dimensions-including-current-v1",
+    "authority": "user clarification in this conversation",
+    "dimension_numbering": "1..5; internal component d0 is dimension 1",
+    "expression_mapping": "connected components of actual run messages; engineering convention",
+    "prior_convention": "dimensions up to and including current; later dimensions excluded",
+    "expressions": [
+      {
+        "members": [
+          "d0:g0",
+          "d1:g0",
+          "d2:g0"
+        ],
+        "state": [
+          0.5174587943353909,
+          0.4825412056646092
+        ],
+        "dimensions": [
+          1,
+          2,
+          3
+        ],
+        "decisions": [
+          {
+            "current_dimension": 3,
+            "expressed_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": true,
+            "distinct_count": 3,
+            "minimum": 3,
+            "perceptible": true,
+            "reason": "at least three expressed dimensions including current",
+            "rule_version": "three-dimensions-including-current-v1"
+          },
+          {
+            "current_dimension": 4,
+            "expressed_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": false,
+            "distinct_count": 3,
+            "minimum": 3,
+            "perceptible": false,
+            "reason": "current dimension has no expression",
+            "rule_version": "three-dimensions-including-current-v1"
+          },
+          {
+            "current_dimension": 5,
+            "expressed_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "counted_dimensions": [
+              1,
+              2,
+              3
+            ],
+            "excluded_later_dimensions": [],
+            "current_included": false,
+            "distinct_count": 3,
+            "minimum": 3,
+            "perceptible": false,
+            "reason": "current dimension has no expression",
+            "rule_version": "three-dimensions-including-current-v1"
+          }
+        ]
+      }
+    ],
+    "perceived_outputs": {
+      "3": [
+        0.5174587943353909,
+        0.4825412056646092
+      ],
+      "4": null,
+      "5": null
+    }
+  },
+  "replay": {
+    "run_id": "8a45f1a7a458e1a84850487f27b3b227c881f97bb0448f665fbd9ab9220837cc",
+    "exact": true,
+    "checks": {
+      "selected": true,
+      "micro": true,
+      "meso": true,
+      "macro": true,
+      "messages": true,
+      "component_inputs": true,
+      "perception": true
+    },
+    "journal": {
+      "valid": true,
+      "records": 4,
+      "head": "8a45f1a7a458e1a84850487f27b3b227c881f97bb0448f665fbd9ab9220837cc"
+    }
+  }
+}

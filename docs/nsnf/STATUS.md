@@ -7,6 +7,7 @@ This is an unfinished implementation of the cumulative specification. It is not 
 | 5 × 64 slots, separate codes/masks/parameters | TESTED | `tests/nsnf/test_core.py`, `evidence/nsnf/python-tests.txt` |
 | Sparse execution and five budgets | TESTED | Real NumPy MLP computations; synthetic feature-salience router |
 | Micro / meso / macro | TESTED as engineering hypothesis | Activity-connected groups and mean deviation, not verified nine-center emergence |
+| Dimensional perception | TESTED | Three expressed dimensions including current; actual message-group mapping, stored decision, restart/replay, API and browser evidence |
 | Nine emergent centers | SPECIFIED / UNRESOLVED | Legacy fixed gate buckets do not meet this requirement |
 | Local parameter learning | TESTED on synthetic task | Disjoint held-out vectors; parameter deltas persisted |
 | Transfer | TESTED on narrow synthetic task | Explicit parameter copy improves receiving model; no claim of general transfer learning |
@@ -33,6 +34,6 @@ The full requested application remains unfinished. Required next work includes s
 
 ## Verified results
 
-16 Python core/API/audio tests passed; 13 original Computer test files passed after restoring declared dependencies; 1 real Computer-to-field integration test passed. The integration patch preserves upstream implementation and identifies its base commit. Synthetic held-out benchmark accuracy was 0.98 for all three variants; the small dense baseline was faster than the sparse field. See benchmark limitations.
+21 Python core/API/audio/perception tests passed; 13 original Computer test files passed after restoring declared dependencies; 1 real Computer-to-field integration test passed. The integration patch preserves upstream implementation and identifies its base commit. Synthetic held-out benchmark accuracy was 0.98 for all three variants; the small dense baseline was faster than the sparse field. See benchmark limitations.
 
 Browser verification now passes using Playwright Chromium at desktop and mobile sizes, including actual WAV upload, playback URL and evidence retrieval. The prior approval-review usage limit has cleared. Audible-device and microphone tests remain pending.

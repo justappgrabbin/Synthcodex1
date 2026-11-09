@@ -12,6 +12,7 @@ class Execution(BaseModel):
     features: list[float] = Field(min_length=8, max_length=8)
     tier: int = Field(default=1, ge=1, le=5)
     reason: str = "explicit request"
+    candidates: list[int] | None = Field(default=None, max_length=320)
 
 
 class Feedback(BaseModel):
@@ -23,7 +24,7 @@ class Feedback(BaseModel):
 
 def create_app(root=None, owner=None):
     runtime = Runtime(root or os.environ.get("NSNF_DATA", "data"), owner or os.environ.get("NSNF_OWNER", "local-owner"))
-    app = FastAPI(title="Cynthia NSNF independent infrastructure", version="0.1.0")
+    app = FastAPI(title="Cynthia NSNF independent infrastructure", version="0.1.2")
     app.state.runtime = runtime
 
     @app.exception_handler(ValueError)
@@ -42,7 +43,7 @@ def create_app(root=None, owner=None):
 
     @app.post("/execute")
     def execute(body: Execution):
-        return runtime.execute(body.features, body.tier, body.reason)
+        return runtime.execute(body.features, body.tier, body.reason, body.candidates)
 
     @app.post("/events")
     def events(body: dict):
@@ -129,6 +130,7 @@ def create_app(root=None, owner=None):
         return {"neural_execution": "CONNECTED", "contact_investigation": "CONNECTED (bounded observations)",
                 "parameter_learning": "TESTED (synthetic binary task)",
                 "parameter_transfer": "TESTED (explicit copy; synthetic task)",
+                "dimensional_perception": "IMPLEMENTED (three dimensions including current; user-defined rule)",
                 "native_audio": "TESTED (PCM measurements, field activation, retrievable artifacts)",
                 "nine_center_emergence": "SPECIFIED / UNRESOLVED",
                 "general_conversation": "SPECIFIED", "image_generation": "SPECIFIED / BACKEND UNAVAILABLE",

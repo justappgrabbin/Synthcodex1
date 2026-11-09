@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": [
+    "blocked perception shown",
+    "accepted three-dimension perception shown",
+    "current dimension counted",
+    "trace version shown",
+    "perception replay verified",
+    "mobile no overflow",
+    "no JS errors"
+  ],
+  "desktop": [
+    1440,
+    1100
+  ],
+  "mobile": [
+    390,
+    844
+  ],
+  "method": "Playwright Chromium"
+}

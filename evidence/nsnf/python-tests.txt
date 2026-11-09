@@ -16,8 +16,13 @@ test_learning_changes_parameters_and_heldout_behavior (test_core.CoreTests.test_
 test_nonverbal_investigation_correction_and_private_scope (test_core.CoreTests.test_nonverbal_investigation_correction_and_private_scope) ... ok
 test_restart_restore_and_exact_replay_after_learning (test_core.CoreTests.test_restart_restore_and_exact_replay_after_learning) ... ok
 test_typed_messages_affect_receiving_computation (test_core.CoreTests.test_typed_messages_affect_receiving_computation) ... ok
+test_all_dimension_combinations (test_perception.PerceptionTests.test_all_dimension_combinations) ... ok
+test_duplicates_current_and_later_dimensions (test_perception.PerceptionTests.test_duplicates_current_and_later_dimensions) ... ok
+test_http_path_carries_perception_decision (test_perception.PerceptionTests.test_http_path_carries_perception_decision) ... ok
+test_real_execution_threshold_restore_and_replay (test_perception.PerceptionTests.test_real_execution_threshold_restore_and_replay) ... ok
+test_unrelated_activity_does_not_create_shared_expression (test_perception.PerceptionTests.test_unrelated_activity_does_not_create_shared_expression) ... ok
 
 ----------------------------------------------------------------------
-Ran 16 tests in 0.333s
+Ran 21 tests in 0.463s
 
 OK
