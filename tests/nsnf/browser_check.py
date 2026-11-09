@@ -1,6 +1,9 @@
 """Run against the local API; real browser controls, no network stubs."""
 from pathlib import Path
 import json
+from io import BytesIO
+import wave
+import numpy as np
 from playwright.sync_api import sync_playwright
 
 root=Path(__file__).resolve().parents[2] / 'evidence' / 'nsnf'
@@ -31,8 +34,20 @@ with sync_playwright() as p:
     page.set_viewport_size({'width':390,'height':844})
     assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
     page.screenshot(path=str(root/'field-mobile.png'),full_page=True)
+    page.get_by_text('Analyze real audio',exact=True).click()
+    stream=BytesIO()
+    with wave.open(stream,'wb') as wav:
+        wav.setnchannels(1);wav.setsampwidth(2);wav.setframerate(16000)
+        wav.writeframes((np.sin(2*np.pi*200*np.arange(16000)/16000)*12000).astype('<i2').tobytes())
+    page.locator('#audio-file').set_input_files({'name':'measured-tone.wav','mimeType':'audio/wav','buffer':stream.getvalue()})
+    page.get_by_role('button',name='Analyze audio',exact=True).click()
+    page.get_by_text('Audio measured and persisted. Meaning remains unresolved.',exact=True).wait_for()
+    page.locator('audio').wait_for()
+    assert 'candidate_f0_hz' in page.locator('#output').inner_text()
+    assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
+    page.screenshot(path=str(root/'audio-mobile.png'),full_page=True)
     assert not errors, errors
     (root/'browser-results.json').write_text(json.dumps({'passed':True,'slots':320,'desktop':[1440,1100],
-        'mobile':[390,844],'checks':['execution','active slots','exact replay','nonverbal clarification','checkpoint','history after reload','no horizontal overflow','no page errors'],
+        'mobile':[390,844],'checks':['execution','active slots','exact replay','nonverbal clarification','checkpoint','history after reload','no horizontal overflow','no page errors','real WAV upload','playback URL','acoustic evidence retrieval'],
         'method':'Playwright Chromium; Browser plugin tool unavailable'},indent=2))
     browser.close()

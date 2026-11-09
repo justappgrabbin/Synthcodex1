@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "slots": 320,
+  "desktop": [
+    1440,
+    1100
+  ],
+  "mobile": [
+    390,
+    844
+  ],
+  "checks": [
+    "execution",
+    "active slots",
+    "exact replay",
+    "nonverbal clarification",
+    "checkpoint",
+    "history after reload",
+    "no horizontal overflow",
+    "no page errors",
+    "real WAV upload",
+    "playback URL",
+    "acoustic evidence retrieval"
+  ],
+  "method": "Playwright Chromium; Browser plugin tool unavailable"
+}

@@ -31,6 +31,20 @@ async function history() {
 async function action(fn) {try{await fn();}catch(e){notice(e.message);}}
 $('execution').onsubmit=e=>{e.preventDefault();action(async()=>{const features=$('features').value.split(',').map(v=>Number(v.trim()));if(features.length!==8||features.some(v=>!Number.isFinite(v)))throw Error('Enter exactly eight finite numbers.');const run=await api('/execute',{features,tier:Number($('tier').value)});render(run);notice(`Persisted run ${run.id.slice(0,12)}.`);await history();});};
 $('contact').onsubmit=e=>{e.preventDefault();action(async()=>{const result=await api('/events',{actor_ref:'local-owner',modality:$('modality').value,timestamp:new Date().toISOString(),observed_features:JSON.parse($('observed').value),source_ref:$('source').value,uncertainty:.8});const record=await api(`/runs/${result.field_run}`);render({id:record.id,...record.payload});$('output').textContent=JSON.stringify(result,null,2);notice(result.response);await history();});};
-$('checkpoint').onclick=()=>action(async()=>{const saved=await api('/checkpoint');notice(`Saved checkpoint ${saved.id}.`);});
+$('checkpoint').onclick=()=>action(async()=>{const saved=await api('/checkpoint',{});notice(`Saved checkpoint ${saved.id}.`);});
 $('replay').onclick=()=>action(async()=>{const result=await api(`/runs/${selectedRun.id}/replay`,{});notice(result.exact?'Exact replay verified against stored neural outputs.':'Replay mismatch: inspect trace.');});
+$('audio-form').onsubmit=e=>{e.preventDefault();action(async()=>{
+  const file=$('audio-file').files[0];
+  if(!file)throw Error('Choose a PCM WAV file.');
+  const response=await fetch('/audio',{method:'POST',headers:{'Content-Type':'audio/wav'},body:file});
+  const result=await response.json();
+  if(!response.ok)throw Error(result.detail||'Audio analysis failed.');
+  const record=await api(`/runs/${result.contact.field_run}`);
+  render({id:record.id,...record.payload});
+  $('output').textContent=JSON.stringify(result.analysis,null,2);
+  const player=document.createElement('audio');player.controls=true;player.src=`/artifacts/${result.source_hash}`;
+  const link=document.createElement('a');link.href=`/artifacts/${result.analysis_hash}`;link.textContent='Open measured acoustic evidence';link.target='_blank';link.rel='noopener';
+  $('audio-artifacts').replaceChildren(player,link);
+  notice('Audio measured and persisted. Meaning remains unresolved.');await history();
+});};
 await action(async()=>{await api('/health');$('connection').textContent='Connected to local field';for(let d=0;d<5;d++){const section=document.createElement('div');section.className='dimension';const label=document.createElement('span');label.textContent=`Dimension ${d+1} · source semantics unresolved`;const grid=document.createElement('div');grid.className='slots';for(let g=0;g<64;g++){const slot=document.createElement('span');slot.className='slot';slot.dataset.id=`d${d}:g${g}`;slot.textContent=g;slot.title=`Dimension ${d+1}, binary slot ${g}`;grid.append(slot);}section.append(label,grid);$('dimensions').append(section);}const capabilities=await api('/capabilities');for(const [name,status] of Object.entries(capabilities)){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=name.replaceAll('_',' ');dd.textContent=status;$('capabilities').append(dt,dd);}await history();});

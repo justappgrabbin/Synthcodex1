@@ -1,6 +1,7 @@
 from copy import deepcopy
 import time
 import threading
+from datetime import datetime, timezone
 import numpy as np
 from .schema import TIERS, ContactEvent, digest
 from .components import MLP
@@ -156,6 +157,9 @@ class Runtime:
             modality_order = ["text", "speech", "gesture", "image", "video", "audio", "environment", "code"]
             f[modality_order.index(event.modality) if event.modality in modality_order else 6] = 1.
             f[7] = event.uncertainty
+            if "neural_features" in observations:
+                # Native extractor features participate in computation; selection validates them.
+                f = observations["neural_features"]
             run = self.execute(f, 2 if clarification else 1, "ambiguity investigation" if clarification else "grounded observation")
             result = {"observation": event.payload(), "field_run": run["id"],
                       "missing_modalities": {m: "UNKNOWN" for m in modality_order if m != event.modality},
@@ -174,6 +178,35 @@ class Runtime:
             state["contacts"].append(observation_id)
             self._commit("contact_index", {"contact_id": observation_id}, state)
             return {"id": observation_id, **result}
+
+    def ingest_audio(self, data, consent_scope="private"):
+        from .acoustics import analyze_wav
+        analysis = analyze_wav(data)
+        with self.lock:
+            source_hash = self.store.put_bytes(data, "audio/wav")
+            analysis_hash = self.store.put(analysis)
+            event = ContactEvent(actor_ref=self.owner, modality="audio",
+                timestamp=datetime.now(timezone.utc).isoformat(),
+                observed_features={"neural_features": analysis["neural_features"],
+                    "analysis_ref": analysis_hash, "duration_s": analysis["duration_s"],
+                    "signal_quality": "uncalibrated PCM; no semantic labels"},
+                source_ref=source_hash, uncertainty=1., consent_scope=consent_scope)
+            result = self.contact(event)
+            state = deepcopy(self.state)
+            artifacts = state.setdefault("artifacts", {})
+            artifacts[source_hash] = {"media_type": "audio/wav", "bytes": len(data),
+                "kind": "original-audio", "contact_id": result["id"], "consent_scope": consent_scope}
+            artifacts[analysis_hash] = {"media_type": "application/json", "kind": "acoustic-analysis",
+                "source_ref": source_hash, "contact_id": result["id"], "extractor": analysis["decoder"]}
+            self._commit("audio_artifacts", {"source_hash": source_hash, "analysis_hash": analysis_hash,
+                "contact_id": result["id"]}, state)
+            return {"contact": result, "source_hash": source_hash, "analysis_hash": analysis_hash,
+                    "analysis": analysis}
+
+    def artifact(self, key):
+        if key not in self.state.get("artifacts", {}):
+            raise KeyError(key)
+        return self.state["artifacts"][key], self.store.get_bytes(key)
 
     def correct_contact(self, contact_id, meaning, evidence_ref):
         if not isinstance(meaning, str) or not meaning.strip() or not evidence_ref:

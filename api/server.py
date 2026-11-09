@@ -1,7 +1,7 @@
 """Local single-owner API. Bind to loopback; multi-user hosting is not implemented."""
 from pathlib import Path
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from nsnf.runtime import Runtime
@@ -47,6 +47,25 @@ def create_app(root=None, owner=None):
     @app.post("/events")
     def events(body: dict):
         return runtime.contact(body)
+
+    @app.post("/audio")
+    async def audio(request: Request):
+        data = bytearray()
+        async for chunk in request.stream():
+            data.extend(chunk)
+            if len(data) > 16 * 1024 * 1024:
+                raise HTTPException(413, "audio exceeds 16 MiB")
+        return runtime.ingest_audio(bytes(data))
+
+    @app.get("/artifacts")
+    def artifacts():
+        return runtime.state.get("artifacts", {})
+
+    @app.get("/artifacts/{key}")
+    def artifact(key: str):
+        metadata, content = runtime.artifact(key)
+        return Response(content, media_type=metadata["media_type"], headers={
+            "Content-Disposition": f'inline; filename="{key}"', "X-Content-Type-Options": "nosniff"})
 
     @app.get("/state/{key}")
     def state(key: str):
@@ -110,6 +129,7 @@ def create_app(root=None, owner=None):
         return {"neural_execution": "CONNECTED", "contact_investigation": "CONNECTED (bounded observations)",
                 "parameter_learning": "TESTED (synthetic binary task)",
                 "parameter_transfer": "TESTED (explicit copy; synthetic task)",
+                "native_audio": "TESTED (PCM measurements, field activation, retrievable artifacts)",
                 "nine_center_emergence": "SPECIFIED / UNRESOLVED",
                 "general_conversation": "SPECIFIED", "image_generation": "SPECIFIED / BACKEND UNAVAILABLE",
                 "video_generation": "SPECIFIED / BACKEND UNAVAILABLE", "voice": "SPECIFIED / DEVICE TEST REQUIRED",

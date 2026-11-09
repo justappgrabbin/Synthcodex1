@@ -13,7 +13,7 @@ python -m pip install -e . httpx
 python -m api.server
 ```
 
-Open `http://127.0.0.1:8000`. The page submits real field runs and contact observations and reads persisted traces. Untrained output is a binary probability vector, not general language understanding. UI browser verification remains pending.
+Open `http://127.0.0.1:8000`. The page submits real field runs and contact observations and reads persisted traces. Untrained output is a binary probability vector, not general language understanding. Desktop (1440 × 1100) and mobile (390 × 844) browser checks pass, including checkpoint, replay and real audio upload. Native audio analysis accepts 16-bit mono/stereo PCM WAV at 8–48 kHz, up to 30 seconds. POST WAV bytes to `/audio`; retrieve the original and measured analysis through `/artifacts/{hash}`. Acoustic measurements do not establish words, emotion or meaning.
 
 Set `NSNF_DATA` to choose the durable SQLite/blob directory. Default owner is `local-owner`; `NSNF_OWNER` can change it for API use. The present diagnostic contact form uses `local-owner` explicitly. Never point distinct owners at the same store.
 
@@ -45,6 +45,6 @@ Construct the existing Computer with `{nsnfBaseUrl:'http://127.0.0.1:8000'}`. Af
 
 ## API
 
-`POST /events`, `POST /execute`, `GET /state/{id}`, `GET /topology`, `POST /topology`, `GET /runs/{id}`, `POST /runs/{id}/replay`, `POST /checkpoint`, `POST /restore`, `POST /feedback`, `POST /contacts/{id}/correction`, `GET /history`, `GET /capabilities`, `GET /health`. Local API documentation is at `/docs`.
+`POST /audio`, `GET /artifacts`, `GET /artifacts/{hash}`, `POST /events`, `POST /execute`, `GET /state/{id}`, `GET /topology`, `POST /topology`, `GET /runs/{id}`, `POST /runs/{id}/replay`, `POST /checkpoint`, `POST /restore`, `POST /feedback`, `POST /contacts/{id}/correction`, `GET /history`, `GET /capabilities`, `GET /health`. Local API documentation is at `/docs`.
 
 Weights, topology, source claims, compact state codes and activation masks are distinct. No fixed nine-center mapping or birth-derived address calculation has been invented. Source-confirmed mechanics, Bantu rule packs, full conversation, media backends, device-tested voice, shared learning, and remaining acceptance benchmarks are still required.

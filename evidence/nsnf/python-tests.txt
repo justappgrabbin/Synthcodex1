@@ -1,6 +1,9 @@
 /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
   from starlette.testclient import TestClient as TestClient  # noqa
 test_real_execute_feedback_replay_restore_and_failures (test_api.APITests.test_real_execute_feedback_replay_restore_and_failures) ... ok
+test_http_receive_and_retrieve (test_audio.AudioTests.test_http_receive_and_retrieve) ... ok
+test_native_frequency_timing_and_no_semantic_inference (test_audio.AudioTests.test_native_frequency_timing_and_no_semantic_inference) ... ok
+test_real_audio_to_field_artifacts_and_restart (test_audio.AudioTests.test_real_audio_to_field_artifacts_and_restart) ... ok
 test_address_precision_and_unresolved_rules (test_core.CoreTests.test_address_precision_and_unresolved_rules) ... ok
 test_all_hexagrams (test_core.CoreTests.test_all_hexagrams) ... ok
 test_append_only_and_integrity (test_core.CoreTests.test_append_only_and_integrity) ... ok
@@ -15,6 +18,6 @@ test_restart_restore_and_exact_replay_after_learning (test_core.CoreTests.test_r
 test_typed_messages_affect_receiving_computation (test_core.CoreTests.test_typed_messages_affect_receiving_computation) ... ok
 
 ----------------------------------------------------------------------
-Ran 13 tests in 0.250s
+Ran 16 tests in 0.333s
 
 OK
